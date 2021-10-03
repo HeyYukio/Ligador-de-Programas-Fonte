@@ -1,0 +1,15 @@
+    @ 010
+    ENT BBB
+    EXT CCC
+    LD /032 
+    MM /037  
+    MM AAA  
+    MM /036  
+    LD /037 
+    - /035 
+    JZ /030 
+AAA K 12 
+BBB K 22
+    # 010
+
+    

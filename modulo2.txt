@@ -1,0 +1,20 @@
+    @ 010
+    EXT BBB
+    LD /037
+    + /032
+    MM AAA
+    LD /034
+    + /033
+    MM /034
+LOOP:
+    + /036
+    MM CCC
+    JP /018
+    IO 0
+    CN 0
+    JP /102
+    JP /004
+    JP /000
+AAA K 44
+CCC K 015
+    # 010

@@ -1,0 +1,19 @@
+    @ 010
+    LD /037
+    + /032
+    MM AAA1
+    LD /034
+    + CCC
+    MM /034
+LOOP3:
+    + /036
+    MM AAA1
+    JP /018
+    IO 0
+    CN 0
+    JP /102
+    JP CCC
+    JP /000
+AAA1 K 10
+CCC K 23 
+    # 010

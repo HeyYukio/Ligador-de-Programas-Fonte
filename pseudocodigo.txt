@@ -1,0 +1,90 @@
+1) Programa imprime as mensagens pedindo escolha da opção
+    Usuário digita 1: vai para 2
+    Usuário digita 2: vai para 14
+    Usuário	digita outra opção: Programa imprime que a opção é inválida e volta para 1
+
+2) Opção escolhida: Inserção de módulo
+    Programa pede para usuário inserir o nome do módulo
+    Nome válido: Vai para 3
+    Nome inválido: O programa levanta um erro e finaliza
+
+3) Inserir módulo com nome de "nome do módulo"
+    Programa abre o arquivo, extrai cada linha do arquivo e chama uma rotina para analisar cada linha,
+    passando como parâmetros o endereço de base (para modificar os operandos de endereços), o módulo atual,
+    as linhas do arquivo e uma lista com todas as linhas, separando por módulo. Para o primeiro módulo, o endereço
+    base é 0.
+    Vai para 4
+
+4) Rotina para analisar linhas
+    Para cada linha i do arquivo do módulo, sendo cada entrada neste passo uma passagem para a próxima linha.
+        Separa a label, operação e operando.
+        Caso tenha apenas label é um ponto de endereço (para usar em JP, por exemplo). Vai para 5.
+        Caso tenha operação e operando é uma instrução. Vai para 6.
+        Caso tenha label, operação e operando é uma declaração de variável ou array. Vai para 7.
+    Quando acabar as linhas do módulo, vai para 1.
+
+5) Apenas uma label
+    Adiciona essa linha numa lista de instruções do módulo para posterior impressão
+
+6) Operação e operando
+    Programa verifica se é uma instrução de endereço de início do primeiro módulo. Se for, vai para 8.
+    Se for uma pseudoinstrução ENT, então vai para 9.
+    Se for uma pseudoinstrução EXT, então vai para 10.
+    Caso seja qualquer outra operação, vai para 11.
+
+7) Label, operação e operando
+    Programa verifica se está na lista de Entries daquele módulo, caso esteja, adiciona na lista de Entries geral.
+    Vai para 12 
+
+8) Pseudoinstrução de início
+    Programa verifica se é o primeiro módulo a ser inserido, caso seja, então coloca o endereço de início do programa como o endereço passado 
+    e adiciona a instrução a lista de linhas a serem impressas.
+    Para todos os módulos, declara que o endereço de início deste módulo (individualmente) é o endereço passado como operando.
+    Vai para 4.
+
+9) Pseudoinstrução de ENT
+    Programa adiciona a variável a lista de entries locais.
+    Vai para 4.
+
+10) Pseudoinstrução de EXT
+    Programa adiciona a variável a lista geral de externals.
+    Vai para 4.
+
+11) Qualquer outra instrução
+    Soma-se 1 ou 2 na variável que indica o endereço atual, dependendo do tamanho da instrução (1 para instrução de 1 byte, 2 para de 2 bytes)
+    Após isso vai para uma rotina de adicionar a instrução a lista que será posteriormente impressa. 
+    Vai para 13.
+
+12) Tratamento de label, operação e operando
+    Neste caso, só pode ser uma declaração de variável local ou entry ou uma declaração de array.
+        Caso esteja na lista de entries locais, o programa adiciona na lista global de entries e coloca a linha na lista que será impressa.
+        Caso seja uma variável local, o programa adiciona na lista global de variáveis locais, que possui o nome de cada variável e seu respectivo módulo.
+    Caso seja uma declaração de variável, soma 1 no endereço atual.
+    Caso seja uma declaração de array, soma o tamanho do array no endereço atual.
+    Vai para 4.
+    
+13) Adicionar instrução de operação e operando na lista de impressão.
+    Verifica se o operando é um endereço ou uma label. Caso seja endereço, soma o endereço base neste. Caso seja uma label, mantém a label.
+    O valor do operando é mantido para operações de 1 byte.
+    Vai para 4.
+
+14) Resolução de conflitos
+    Verifica se há incompatibilidades de nomes entre entry points e variáveis locais. Caso haja, vai para 15.
+    Verifica se há incompatibilidades de nomes entre variáveis locais. Caso haja, vai para 16.
+    Caso todas as incompatibilidades estejam resolvidas, vai para 17.
+
+15) Resolução de nomes entre entry points e variáveis locais
+    Para o módulo em que há uma variável local com o mesmo nome do entry point de outro módulo, adiciona-se o valor "i" no final do nome dessa variável,
+    (sendo que para a primeira vez que houver uma resolução para esta variável, o valor de "i" é igual a 1), tanto na declaração, quanto
+    nas referências desta variável local neste módulo. Por fim, soma-se 1 a "i". Atualiza-se o nome desta variável do módulo na lista global de variáveis locais.
+    Vai para 14.
+
+16) Resolução de nomes entre variáveis locais
+    Para o módulo em que há uma variável local com o mesmo nome de outra variável local de outro módulo, adiciona-se o valor "j" no final do nome dessa variável,
+    (sendo que para a primeira vez que houver uma resolução para esta variável, o valor de "j" é igual a 1), tanto na declaração, quanto
+    nas referências desta variável local neste módulo. Por fim, soma-se 1 a "j". Atualiza-se o nome desta variável do módulo na lista global de variáveis locais.
+    Vai para 14.
+
+17) Impressão
+    Para cada item da lista de linhas a serem impressas, imprime a linha atual no arquivo de resultado.
+    Programa finaliza.
